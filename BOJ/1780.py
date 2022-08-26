@@ -1,4 +1,5 @@
-
+import sys
+input = sys.stdin.readline
 n = int(input())
 
 graph = []
@@ -29,19 +30,19 @@ def cut(graph) :
                     minusone += 1
                     continue
         return
+        
 
     else :
         p = t//3
-        for x,y in [(0,0),(p,0),(2*p,0),(p,0),(p,p),(p,2*p),(2*p,0),(2*p,p),(2*p,2*p)] :
+        for x,y in [(0,0),(0,p),(0,2*p),(p,0),(p,p),(p,2*p),(2*p,0),(2*p,p),(2*p,2*p)] :
             s = set()
             for i in range(p) :
                 for j in range(p) :
                     s.add(graph[x+i][y+j])
-
+                    
             if len(s) == 1 :
                 if 1 in s :
                     plusone += 1
-                    print(x,y)
                     continue
                 elif -1 in s :
                     minusone += 1
@@ -51,11 +52,13 @@ def cut(graph) :
                     continue
             else :
                 secondgraph = []
+                
                 for ii in range(p) :
                     secondgraph.append(graph[x+ii][y:y+p])
-
+                
                 cut(secondgraph)
                 continue
+        return
 
 cut(graph)
 print(minusone)
