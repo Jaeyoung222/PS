@@ -61,6 +61,13 @@ def cut(graph) :
         return
 
 cut(graph)
+if not minusone and not zero :
+    plusone = 1
+elif not zero and not plusone :
+    minusone = 1
+elif not plusone and not minusone :
+    zero = 1
+    
 print(minusone)
 print(zero)
 print(plusone)
