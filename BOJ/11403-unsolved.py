@@ -1,39 +1,27 @@
 n = int(input())
 graph = []
+ans = []
 for _ in range(n) :
     graph.append(list(map(int,input().split())))
+    ans.append([0]*n)
 
-
-from collections import deque
-
-for i in range(n) :
-    for j in range(n) :
-        qij = deque()
-        if graph[i][j] == 1 :
-            graph[j][i] = 1
-            qij.append(j)
-        while qij :
-            visited = [0]*n
-            
-        
-            
+from collections import deque            
 
 for row in range(n) :
     qrow = deque()
-    
-    for x in graph[row] :
-        visited = [0]*n
-        if x == 1 :
-            y = graph[row].index(x)
-            qrow.append(y)
-            visited[y] = 1
-            while qrow :
-                t = qrow.popleft()
-                graph[row][t] = 1
-                for xx in graph[t] :
-                    if xx == 1 and visited[graph[t].index(xx)]==0:
-                        qrow.append(graph[t].index(xx))
-                        visited[graph[t].index(xx)] = 1
+    visited = [0]*n
+    for i in range(n) :
+        if graph[row][i]== 1 :
+            qrow.append(i)
+            visited[i] = 1
+            ans[row][i] = 1
+    while qrow :
+        t = qrow.popleft()
+        for ii in range(n) :
+            if graph[t][ii] == 1 and visited[ii]==0:
+                qrow.append(ii)
+                visited[ii] = 1
+                ans[row][ii] = 1
 
-for ii in range(n) :
-    print(graph[ii])
+for iii in range(n) :
+    print(*ans[iii])
