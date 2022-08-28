@@ -1,66 +1,97 @@
-import copy
-import sys
-input = sys.stdin.readline
-n,m = map(int,input().split())
+N,M=map(int,input().split())
+array=[list(map(int,input().split())) for _ in range(N)]
+maximum=0
 
-graph = []
-visited = []
-visited_origin = []
+def maxcheck(arr,n,m,i,j):
+    global maximum
+    # 일자
+    if j<=m-4:
+        num=arr[i][j]+arr[i][j+1]+arr[i][j+2]+arr[i][j+3]
+        if num>maximum:
+            maximum=num
+    if i<=n-4:
+        num=arr[i][j]+arr[i+1][j]+arr[i+2][j]+arr[i+3][j]
+        if num>maximum:
+            maximum=num
+    # 네모
+    if j<=m-2 and i<=n-2:
+        num=arr[i][j]+arr[i+1][j]+arr[i][j+1]+arr[i+1][j+1]
+        if num>maximum:
+            maximum=num
+    # L자
+    if j<=m-2 and i<=n-3:
+        num=arr[i][j]+arr[i][j+1]+arr[i+1][j+1]+arr[i+2][j+1]
+        if num>maximum:
+            maximum=num
+    if j>=1 and i<=n-3:
+        num=arr[i][j]+arr[i][j-1]+arr[i+1][j-1]+arr[i+2][j-1]
+        if num>maximum:
+            maximum=num
+    if j<=m-2 and i>=2:
+        num=arr[i][j]+arr[i][j+1]+arr[i-1][j+1]+arr[i-2][j+1]
+        if num>maximum:
+            maximum=num
+    if j>=1 and i>=2:
+        num=arr[i][j]+arr[i][j-1]+arr[i-1][j-1]+arr[i-2][j-1]
+        if num>maximum:
+            maximum=num
+    
+    if j<=m-3 and i>=1:
+        num=arr[i][j]+arr[i-1][j]+arr[i-1][j+1]+arr[i-1][j+2]
+        if num>maximum:
+            maximum=num
+    if j>=2 and i>=1:
+        num=arr[i-1][j-2]+arr[i-1][j-1]+arr[i-1][j]+arr[i][j]
+        if num>maximum:
+            maximum=num
+    if j<=m-3 and i<=n-2:
+        num=arr[i][j]+arr[i+1][j]+arr[i+1][j+1]+arr[i+1][j+2]
+        if num>maximum:
+            maximum=num
+    if j>=2 and i<=n-2:
+        num=arr[i+1][j-2]+arr[i+1][j-1]+arr[i+1][j]+arr[i][j]
+        if num>maximum:
+            maximum=num
+    
+    # ㄱㄴ
+    if j<=m-2 and i<=n-3:
+        num=arr[i][j]+arr[i+1][j]+arr[i+1][j+1]+arr[i+2][j+1]
+        if num>maximum:
+            maximum=num
+    if j>=1 and i<=n-3:
+        num=arr[i][j]+arr[i+1][j]+arr[i+1][j-1]+arr[i+2][j-1]
+        if num>maximum:
+            maximum=num
+    if j<=m-3 and i>=1:
+        num=arr[i][j]+arr[i][j+1]+arr[i-1][j+1]+arr[i-1][j+2]
+        if num>maximum:
+            maximum=num
+    if j>=2 and i>=1:
+        num=arr[i][j]+arr[i][j-1]+arr[i-1][j-1]+arr[i-1][j-2]
+        if num>maximum:
+            maximum=num
 
-for _ in range(n) :
-    graph.append(list(map(int,input().split())))
-    visited.append([0]*m)
-for __ in range(n) :
-    visited_origin.append([0]*m)
+    #ㅗ
+    if j<=m-3 and i<=n-2:
+        num=arr[i][j]+arr[i][j+1]+arr[i+1][j+1]+arr[i][j+2]
+        if num>maximum:
+            maximum=num
+    if j<=m-3 and i>=1:
+        num=arr[i][j]+arr[i][j+1]+arr[i-1][j+1]+arr[i][j+2]
+        if num>maximum:
+            maximum=num
+    if j<=m-2 and i>=2:
+        num=arr[i][j]+arr[i-1][j]+arr[i-1][j+1]+arr[i-2][j]
+        if num>maximum:
+            maximum=num
+    if j>=1 and i>=2:
+        num=arr[i][j]+arr[i-1][j]+arr[i-1][j-1]+arr[i-2][j]
+        if num>maximum:
+            maximum=num
 
-def findmax(x,y,graph,visited,n,m) :
-    a=0
-    b=0
-    sss = 0
-    for z,w in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)] :
-        if z>=0 and z<n and w>=0 and w<m :
-            if visited[z][w] == 0 and sss<graph[z][w] :
-                visited[z][w] = 1
-                sss = graph[z][w]
-                a=z
-                b=w
-    return a,b,sss
 
-max = 0
+for i in range(N):
+    for j in range(M):
+        maxcheck(array,N,M,i,j)
 
-for i in range(n) :
-    for j in range(m) :
-        c = 1
-        s = graph[i][j]
-        visited[i][j] = 1
-        ii = i
-        jj = j
-
-        while c<=3 :
-            xx,yy,ss = findmax(ii,jj,graph,visited,n,m)
-            s += ss
-            c += 1
-            ii = xx
-            jj = yy
-
-        if s > max :
-            max = s
-
-        visited = copy.deepcopy(visited_origin)
-
-        if i>=1 and i<=n-2 :
-            if j>=0 and j<=n-2 : 
-                if max < graph[i][j]+graph[i-1][j]+graph[i+1][j]+graph[i][j+1] :
-                    max = graph[i][j]+graph[i-1][j]+graph[i+1][j]+graph[i][j+1]
-            if j>=1 and j<=n-1 :
-                if max < graph[i][j]+graph[i-1][j]+graph[i+1][j]+graph[i][j-1] :
-                    max = graph[i][j]+graph[i-1][j]+graph[i+1][j]+graph[i][j-1]
-        if j>=1 and j<=n-2 :
-            if i>=0 and i<=n-2 :
-                if max < graph[i][j]+graph[i][j-1]+graph[i][j+1]+graph[i+1][j] :
-                        max = graph[i][j]+graph[i][j-1]+graph[i][j+1]+graph[i+1][j]
-            if i>=1 and i<n-1 :
-                if max < graph[i][j]+graph[i][j-1]+graph[i][j+1]+graph[i-1][j] :
-                        max = graph[i][j]+graph[i][j-1]+graph[i][j+1]+graph[i-1][j]
-
-print(max)
+print(maximum)
