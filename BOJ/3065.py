@@ -24,10 +24,10 @@ class BinaryTreeNode :
         q = deque()
         q.append(treenode)
         while q :
+                q.append(nod.left)
             nod = q.popleft()
             s.add(nod.value)
             if nod.left :
-                q.append(nod.left)
             if nod.right :
                 q.append(nod.right)
         s.remove(v)
